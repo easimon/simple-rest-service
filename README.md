@@ -6,10 +6,15 @@ Released docker container runs on `linux/amd64`,`linux/arm/v7`,`linux/arm64/v8`.
 ## Endpoints
 
 ```
+# persons (consisting of a id (UUID) and name (String))
 http://localhost:8080/persons
 http://localhost:8080/persons?name=L
 http://localhost:8080/persons/{UUID}
 
+# simple health endpoint
+http://localhost:8080/health
+
+# all environment variables (beware, may contain sensitive information)
 http://localhost:8080/environment
 ```
 
