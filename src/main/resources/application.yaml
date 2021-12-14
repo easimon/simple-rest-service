@@ -3,7 +3,10 @@ spring:
     serialization:
       INDENT_OUTPUT: true
 
+management:
+  endpoints:
+    web:
+      base-path: /
+
 app:
   enableenv: false
-
-
