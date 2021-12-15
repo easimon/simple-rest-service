@@ -9,4 +9,6 @@ management:
       base-path: /
 
 app:
-  enableenv: false
+  environment-endpoint:
+    enabled: false
+    filtered-prefixes: APPSETTING_, WEBSITE_, IDENTITY_, MSI_
