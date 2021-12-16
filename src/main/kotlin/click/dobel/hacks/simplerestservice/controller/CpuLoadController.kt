@@ -11,9 +11,7 @@ class CpuLoadController(
 ) {
 
   @GetMapping("/load/add")
-  fun generateLoad(
-    @RequestParam(name = "secs", required = false, defaultValue = "10") seconds: Long
-  ): String {
+  fun generateLoad(@RequestParam(name = "secs", required = false, defaultValue = "10") seconds: Long): String {
     repository.queueLoadTask(seconds)
     return "OK"
   }

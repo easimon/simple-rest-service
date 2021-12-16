@@ -11,20 +11,10 @@ import org.springframework.web.bind.annotation.RestController
 class PersonController(
   private val repository: PersonRepository
 ) {
-
   @GetMapping("/persons")
-  fun getPersons(
-    @RequestParam(
-      name = "name",
-      required = false,
-      defaultValue = ""
-    ) nameSubstring: String
-  ): List<Person> {
-    return repository.getPersons(nameSubstring)
-  }
+  fun getPersons(@RequestParam(name = "name", required = false, defaultValue = "") nameSubstring: String) =
+    repository.getPersons(nameSubstring)
 
   @GetMapping("/persons/{id}")
-  fun getPersonById(@PathVariable(name = "id") id: String): Person? {
-    return repository.getPersonById(id)
-  }
+  fun getPersonById(@PathVariable(name = "id") id: String): Person? = repository.getPersonById(id)
 }

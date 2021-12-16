@@ -9,6 +9,7 @@ management:
       base-path: /
 
 app:
+  deployment-type: local
   environment-endpoint:
     enabled: false
     filtered-prefixes: APPSETTING_, WEBSITE_, IDENTITY_, MSI_

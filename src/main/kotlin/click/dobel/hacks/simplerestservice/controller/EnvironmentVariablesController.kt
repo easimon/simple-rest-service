@@ -1,33 +1,31 @@
 package click.dobel.hacks.simplerestservice.controller
 
-import click.dobel.hacks.simplerestservice.config.EnvironmentEndpointProperties
-import org.slf4j.LoggerFactory
+import click.dobel.hacks.simplerestservice.repository.EnvironmentVarRepository
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @ConditionalOnProperty(prefix = "app", name = ["environment-endpoint.enabled"], havingValue = "true")
 class EnvironmentVariablesController(
-  configuration: EnvironmentEndpointProperties
+  private val repository: EnvironmentVarRepository
 ) {
 
-  companion object {
-    private val LOGGER = LoggerFactory.getLogger(EnvironmentVariablesController.javaClass)
-  }
+  @GetMapping("/environment")
+  fun getEnvironment() = repository.filteredEnviromentVariables
 
-  val filteredVarPrefixes = configuration.filteredPrefixes
-    .split(",")
-    .map { it.trim() }
-    .toSet()
-
-  @GetMapping("/environment", produces = ["text/plain"])
-  fun getEnvironment(): String {
-    LOGGER.info("filtering: {}", filteredVarPrefixes.joinToString(","))
-    return System.getenv()
-      .filter { envVar -> filteredVarPrefixes.all { !envVar.key.startsWith(it) } }
-      .map { e -> "${e.key}=${e.value}" }
-      .sorted()
-      .joinToString("\n")
+  @GetMapping("/environment/{variableName}")
+  fun getEnvironment(
+    @PathVariable(name = "variableName") variableName: String,
+    @RequestParam(name = "all", required = false, defaultValue = "false") all: Boolean,
+  ): Map<String, String> {
+    val props = if (all) {
+      repository.allEnviromentVariables
+    } else {
+      repository.filteredEnviromentVariables
+    }
+    return props.filter { it.key == variableName }
   }
 }
