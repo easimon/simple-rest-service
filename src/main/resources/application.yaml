@@ -1,4 +1,9 @@
 spring:
+  web:
+    resources:
+      static-locations: "file:/static-files"
+  mvc:
+    static-path-pattern: "/static/**"
   jackson:
     serialization:
       INDENT_OUTPUT: true
